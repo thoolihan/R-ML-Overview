@@ -1,2 +1,3 @@
 .Python
 notebook_venv/
+.ipynb_checkpoints/
