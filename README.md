@@ -9,4 +9,4 @@ Feel Free to fork, change, etc. No warranty, but do as you please.
     jupyter notebook
 
 ## Questions? Comments?
-@thoolihan
+[@thoolihan](https://twitter.com/thoolihan)
