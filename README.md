@@ -4,9 +4,9 @@ Presentation for [Greater Cleveland SciPy Julia R Data Science Group](http://www
 Feel Free to fork, change, etc. No warranty, but do as you please.
 
 ## Getting started with Notebooks from the presentation
-; create a virtual environment if needed
-pip install -r requirements.txt
-jupyter notebook
+    ; create a virtual environment if needed
+    pip install -r requirements.txt
+    jupyter notebook
 
 ## Questions? Comments?
 @thoolihan
