@@ -4,25 +4,135 @@ author: Tim Hoolihan (@thoolihan)
 date: 2018.05.04
 autosize: true
 
-First Slide
+About the Talk
 ========================================================
 
-For more details on authoring R presentations please visit <https://support.rstudio.com/hc/en-us/articles/200486468>.
+1. Super-brief crash course in R
+2. What is machine learning
+3. What does it look like in R
+4. Where to go to learn more
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
-
-Slide With Code
+R
 ========================================================
+- An implementation of the S language, that has evolved on it's own
+- Built-in support for Statistics
+- Lots of packages for a variety of STEM domains
+  - Considered a large reason for the growth of the R Community
+- Integrations with a lot of systems (Most RDBMSs, Hadoop, Spark, ElasticSearch, etc)
+- [r-project.org](r-project.org)
+
+Unique Things About R Syntax
+========================================================
+Assignment supports `=`, but `<-` is dominant in practice
 
 ```{r}
-summary(cars)
+x <- 5
 ```
 
-Slide With Plot
-========================================================
+Functions declared through assignment, implied return
+```{r}
+foo <- function(x, y) {
+  return(x + y)
+}
 
-```{r, echo=FALSE}
-plot(cars)
+# above is the same as below
+
+foo <- function(x, y) {
+  x + y
+}
 ```
+
+Vectors and Vector Operations
+=======================================================
+```{r}
+heights <- c(1.7, 1.72, 1.68, 1.6, 1.8)
+length(heights)
+mean(heights)
+sd(heights)
+
+```
+
+Vectors and Vector Operations
+=======================================================
+```{r}
+heights <- c(1.7, 1.72, 1.68, 1.6, 1.8)
+feet_per_meter <- 3.28
+tmp <- heights * feet_per_meter
+
+# above is preferred and more performant than
+
+tmp <- c()
+for(height in heights){
+  tmp <- c(tmp, height * feet_per_meter)
+}
+```
+
+Distributions
+=======================================================
+```{r}
+# normal distribution
+heights = rnorm(500, mean = 66, sd = 3.5)
+# uniform distrubution added to heights
+armspans <- heights + runif(500, min = -3, max = 3)
+hist(heights, breaks = 8)
+```
+
+
+Data Frames
+=======================================================
+```{r}
+people <- data.frame(height = heights, armspan = armspans)
+head(people)
+```
+
+Data Frames
+=======================================================
+The dim function (dimensions) shows `r dim(people)[1]` observations of `r dim(people)[2]` variables
+```{r}
+dim(people)
+```
+
+Libraries
+=======================================================
+```{r}
+library(ggplot2)
+```
+
+Plot Data
+=======================================================
+```{r}
+qplot(x = height, y = armspan, data = people)
+```
+
+Formula
+=======================================================
+- `armspan ~ height` is a formula, can be read as 
+```{r}
+reg_form <- lm(armspan ~ height, data = people)
+```
+
+Regression
+=======================================================
+- lm is a function to fit a linear model
+```{r}
+summary(reg_form)$coeff
+```
+- Remember y = mx + b
+  - armspan = `r reg_form$coefficients[['height']]` * height + `r reg_form$coefficients[['(Intercept)']]`
+  
+Apply Formula
+=======================================================
+```{r}
+people$rline <- predict(reg_form, data = people$height)
+people$rline
+```
+  
+Plot Regression
+=======================================================
+```{r}
+ggplot(data = people, aes(x = height)) + 
+  geom_point(aes(y = armspan)) + 
+  geom_line(aes(y = rline, color = 'regression line'))
+```
+
+
