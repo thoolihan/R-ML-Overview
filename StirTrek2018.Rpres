@@ -123,7 +123,7 @@ summary(reg_form)$coeff
 Apply Formula
 =======================================================
 ```{r}
-people$rline <- predict(reg_form, data = people$height)
+people$rline <- predict(reg_form, newdata = people)
 people$rline
 ```
   
@@ -157,4 +157,30 @@ This Is Machine Learning
 The model to describe the relationship can be used to to predict the response variable, based on the input variable(s). It's not a perfect predictor, but can be a useful prediction. Among other considerations, it's best that you're trying to predict on a subject that is of the same type as the data used to train the model. 
 
 As an example, our model for American adults should not be applied to children, as they were not represented in the set and have meaningful physiological differences.
+
+
+So Let's Make a Prediction
+=======================================================
+We meet someone new with a height of 70 inches. What does our model predict their armspan is?
+```{r}
+new_person = list(height = 70)
+predict(reg_form, newdata = new_person)
+```
+
+A Word on Data Sets
+=======================================================
+# When Supervised Learning...
+## Train
+Data used to train and tune the algorithm
+
+## Validation
+Data used to validate the model being built
+
+## Test
+
+I Thought R Was "Good" At Machine Learning
+=======================================================
+- Caret
+  - Functions for splitting data into test and train sets
+
 
