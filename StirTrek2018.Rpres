@@ -3,25 +3,34 @@ Machine Learning in R
 author: Tim Hoolihan (@thoolihan)
 date: 2018.05.04
 autosize: true
+```{r setup, include=FALSE}
+opts_chunk$set(cache=TRUE)
+```
 
-Engage
+Tim Hoolihan
 ========================================================
-* Questions
-* Feedback
-* Use #2018--purple channel
-* Some questions will get answered at the end of the session time permitting
-* I'll respond to anything else I can after the session
-  * Except during the Avengers :)
-  
+- Organizer of the Cleveland R User Group
+- Sr. Director of Data Science at DialogTech
+- Advisory Board Member at DriveIT in Akron
+- Author of a Packt Pub Video Series on Machine Learning in R
+- @thoolihan on github & twitter
+
+========================================================
 ![Questions? Feedback?](images/StirTrek2018-SessionSlack.png)
+
+## We are in \#2018--purple
 
 About the Talk
 ========================================================
 
 1. Super-brief crash course in R
 2. What is machine learning
-3. What does it look like in R
-4. Where to go to learn more
+3. Regression - Predicting Continuous Values
+4. Classification - Predicting Discrete(Categorical) Values
+5. Deep Learning
+6. Unsupervised Learning
+7. Your Next Steps
+8. Q & A
 
 R
 ========================================================
@@ -37,9 +46,15 @@ Unique Things About R Syntax
 Assignment supports `=`, but `<-` is dominant in practice
 
 ```{r}
+x = 5
+
+# above is the same as below
+
 x <- 5
 ```
 
+Unique Things About R Syntax
+========================================================
 Functions declared through assignment, implied return
 ```{r}
 foo <- function(x, y) {
@@ -68,6 +83,7 @@ Vectors and Vector Operations
 ```{r}
 heights <- c(1.7, 1.72, 1.68, 1.6, 1.8)
 feet_per_meter <- 3.28
+
 tmp <- heights * feet_per_meter
 
 # above is preferred and more performant than
@@ -83,11 +99,22 @@ Distributions
 ```{r}
 # normal distribution
 heights = rnorm(500, mean = 66, sd = 3.5)
-# uniform distrubution added to heights
-armspans <- heights + runif(500, min = -3, max = 3)
-hist(heights, breaks = 8)
+heights[1:5]
 ```
 
+Histogram
+=======================================================
+```{r}
+hist(heights, breaks = 12)
+```
+
+Let's make a related variable with some noise
+=======================================================
+```{r}
+# uniform distrubution added to heights
+armspans <- heights + runif(500, min = -3, max = 3)
+armspans[1:5]
+```
 
 Data Frames
 =======================================================
@@ -122,11 +149,17 @@ Formula
 reg_form <- lm(armspan ~ height, data = people)
 ```
 
+Summary of our Regression Line
+=======================================================
+```{r}
+summary(reg_form)
+```
+
 Regression
 =======================================================
 - lm is a function to fit a linear model
 ```{r}
-summary(reg_form)$coeff
+reg_form$coefficients
 ```
 - Remember y = mx + b
   - armspan = `r reg_form$coefficients[['height']]` * height + `r reg_form$coefficients[['(Intercept)']]`
@@ -188,10 +221,77 @@ Data used to train and tune the algorithm
 Data used to validate the model being built
 
 ## Test
+Data used with final model to estimate model fit
 
-I Thought R Was "Good" At Machine Learning
+Caret Package
 =======================================================
-- Caret
-  - Functions for splitting data into test and train sets
+* Name is short for **C**lassification **A**nd **RE**gression **T**raining
 
+Contains tools for:
+
+* data splitting
+* pre-processing
+* feature selection
+* model tuning using resampling
+* variable importance estimation
+
+Regression: Predicting HP
+=======================================================
+```{r}
+head(mtcars)
+```
+
+Select Continuous Columns
+=======================================================
+```{r}
+x <- mtcars[, c('hp', 'mpg', 'disp', 'wt', 'qsec')]
+head(x)
+```
+
+Let's Look At Correlation
+=======================================================
+```{r}
+pairs(x)
+```
+
+Split Our Data
+=======================================================
+```{r}
+library(caret)
+
+training_index <- createDataPartition(x$hp, p = 0.7, list = FALSE)
+train_data <- x[training_index, ]
+test_data <- x[-training_index, ]  # note the '-' in front of the index
+
+dim(train)
+```
+
+Create Our Model
+=======================================================
+```{r}
+model <- train(hp ~ .,
+               data = train_data,
+               preProcess = c('center', 'scale'),
+               method = "lm")
+
+summary(model)
+```
+
+Predict On Test Data
+=======================================================
+```{r}
+test_data$predicted <- predict(model, test_data)
+test_data[, c('hp', 'predicted')]
+```
+
+Measuring Error
+=======================================================
+```{r}
+library(ModelMetrics)
+mse(test_data$hp, test_data$predicted)
+```
+
+```{r}
+mae(test_data$hp, test_data$predicted)
+```
 
