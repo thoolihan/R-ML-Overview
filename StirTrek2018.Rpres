@@ -271,7 +271,6 @@ Create Our Model
 ```{r}
 model <- train(hp ~ .,
                data = train_data,
-               preProcess = c('center', 'scale'),
                method = "lm")
 
 summary(model)
