@@ -27,7 +27,8 @@ About the Talk
 2. What is machine learning
 3. Regression - Predicting Continuous Values
 4. Classification - Predicting Discrete(Categorical) Values
-5. Briefly touch on Deep Learning
+5. Unsupervised Learning
+5. Deep Learning
 6. Your Next Steps
 
 R
@@ -176,7 +177,7 @@ with(people,
 )
 ```
 
-A lot of functions take a data argument as the environment in which the evaluate the arguments
+A lot of functions take a data argument as the environment in which they evaluate the arguments
 
 Formula
 =======================================================
@@ -638,3 +639,5 @@ Suggested Resources
 ![Questions? Feedback?](images/StirTrek2018-SessionSlack.png)
 
 ## We are in \#2018--purple
+
+### Slides are at https://github.com/thoolihan/R-ML-Overview
