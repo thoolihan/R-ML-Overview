@@ -27,10 +27,8 @@ About the Talk
 2. What is machine learning
 3. Regression - Predicting Continuous Values
 4. Classification - Predicting Discrete(Categorical) Values
-5. Deep Learning
-6. Unsupervised Learning
-7. Your Next Steps
-8. Q & A
+5. Briefly touch on Deep Learning
+6. Your Next Steps
 
 R
 ========================================================
@@ -144,7 +142,7 @@ qplot(x = height, y = armspan, data = people)
 
 Formula
 =======================================================
-- `armspan ~ height` is a formula, can be read as 
+- `armspan ~ height` is a formula, can be read as "armspan by height"
 ```{r}
 reg_form <- lm(armspan ~ height, data = people)
 ```
@@ -163,30 +161,30 @@ reg_form$coefficients
 ```
 - Remember y = mx + b
   - armspan = `r reg_form$coefficients[['height']]` * height + `r reg_form$coefficients[['(Intercept)']]`
-  
+
 Apply Formula
 =======================================================
 ```{r}
 people$rline <- predict(reg_form, newdata = people)
 people$rline
 ```
-  
+
 Plot Regression
 =======================================================
 ```{r}
-ggplot(data = people, aes(x = height)) + 
-  geom_point(aes(y = armspan)) + 
+ggplot(data = people, aes(x = height)) +
+  geom_point(aes(y = armspan)) +
   geom_line(aes(y = rline, color = 'regression line'))
 ```
 
-  
+
 What is Our Regression Formula/Line?
 =======================================================
-It describes the relationship between the response variable (armspan) and the dependent variable (height). In other words, it describes how armspan is expected to change when height changes. 
+It describes the relationship between the response variable (armspan) and the dependent variable (height). In other words, it describes how armspan is expected to change when height changes.
 
 How It Was Created
 =======================================================
-We did not explicitly program the relationship with rules, we used an alogorithm that could infer the relationship based on example data. 
+We did not explicitly program the relationship with rules, we used an alogorithm that could infer the relationship based on example data.
 
 Does The Relationship Hold?
 =======================================================
@@ -198,7 +196,7 @@ Let's assume that was real data from American adults (18-50) measured in the las
 
 This Is Machine Learning
 =======================================================
-The model to describe the relationship can be used to to predict the response variable, based on the input variable(s). It's not a perfect predictor, but can be a useful prediction. Among other considerations, it's best that you're trying to predict on a subject that is of the same type as the data used to train the model. 
+The model to describe the relationship can be used to to predict the response variable, based on the input variable(s). It's not a perfect predictor, but can be a useful prediction. Among other considerations, it's best that you're trying to predict on a subject that is of the same type as the data used to train the model.
 
 As an example, our model for American adults should not be applied to children, as they were not represented in the set and have meaningful physiological differences.
 
@@ -263,7 +261,7 @@ training_index <- createDataPartition(x$hp, p = 0.7, list = FALSE)
 train_data <- x[training_index, ]
 test_data <- x[-training_index, ]  # note the '-' in front of the index
 
-dim(train)
+dim(train_data)
 ```
 
 Create Our Model
@@ -280,7 +278,10 @@ Predict On Test Data
 =======================================================
 ```{r}
 test_data$predicted <- predict(model, test_data)
-test_data[, c('hp', 'predicted')]
+
+test_data$miss <- test_data$predicted - test_data$hp
+
+test_data[, c('hp', 'predicted', 'miss')]
 ```
 
 Measuring Error
@@ -294,3 +295,231 @@ mse(test_data$hp, test_data$predicted)
 mae(test_data$hp, test_data$predicted)
 ```
 
+Housing Prices
+=======================================================
+Let's look at a larger size data set:
+```{r}
+houses_raw <- read.csv("data/housing/train.csv")
+
+houses <- houses_raw[, c('LotArea', 'Neighborhood',
+                         'YearBuilt', 'TotRmsAbvGrd',
+                         'FullBath', 'HalfBath',
+                         'GrLivArea', 'TotalBsmtSF',
+                         'SalePrice')]
+dim(houses)
+```
+
+Categorical Features
+=======================================================
+```{r}
+class(houses$Neighborhood)
+```
+```{r}
+summary(houses$Neighborhood)
+```
+
+Cross Validation
+=======================================================
+![kfold cross val](images/kfold.jpg)
+
+[creative commons - wikimedia]
+
+Cross Validation
+=======================================================
+```{r}
+folds <- 10
+trctl <- trainControl(method = "cv", number = folds, savePredictions = TRUE)
+
+model <- train(SalePrice ~ .,
+               data = houses,
+               method = "lasso",  # another regression model
+               trControl = trctl,
+               preProcess = c('center', 'scale'))
+```
+
+Examine Housing Results
+=======================================================
+```{r}
+mae(houses$SalePrice, model$pred$pred)
+```
+
+A Word On Centering
+=======================================================
+```{r}
+center <- function(data) {
+  return(data - mean(data))
+}
+
+center(0:10)
+```
+
+A Word On Scaling
+=======================================================
+```{r}
+scale <- function(data) {
+  data <- data - min(data)
+  return(data / max(data))
+}
+
+scale(0:10)
+```
+
+Combined
+=======================================================
+```{r}
+data <- runif(10, min = 1e4, max = 5e6)
+data
+```
+
+```{r}
+center(scale(data))
+```
+
+Preprocessing
+=======================================================
+Caret just handled that with:
+```{r, eval = FALSE}
+preProcess = c('center', 'scale')
+```
+
+Classification
+=======================================================
+iris data set
+```{r}
+head(iris)
+```
+
+SVM for Classification
+=======================================================
+Support Vector Machine
+```{r}
+trctl <- trainControl(method="cv", repeats=3,
+                      savePredictions = TRUE)
+
+model <- train(Species ~ .,
+               data = iris,
+               method = "svmRadial",
+               trControl = trctl,
+               preprocess = c('scale'))
+```
+
+SVM Results
+=======================================================
+Confusion Matrix
+```{r}
+#prefix with library, but ModelMetrics also has a confusion matrix function
+caret::confusionMatrix(model$pred$obs, model$pred$pred)$table
+```
+
+Unsupervised Learning
+=======================================================
+The algorithm looks for patterns without answers. This is useful for exploring your data.
+
+Clustering with labelled classification data before doing supervised learning, can be a great way to decide if the categories you selected may have overlap, or other issues.
+
+Unsupervised Learning
+=======================================================
+Let's load up Satellite image data that could be used in a classification problem
+
+```{r}
+library(mlbench)
+library(tsne)
+
+data("Satellite")
+dim(Satellite)
+```
+
+Clustering Satellite Data
+=======================================================
+What fields to do we have?
+
+```{r}
+names(Satellite)
+```
+
+Clustering Satellite Data
+=======================================================
+What does our input data look like?
+
+```{r}
+class(Satellite$x.10)
+```
+
+
+```{r}
+summary(Satellite$x.10)
+```
+
+Clustering Satellite Data
+=======================================================
+What does our label data look like?
+
+```{r}
+class(Satellite$classes)
+```
+
+
+```{r}
+summary(Satellite$classes)
+```
+
+Split into X, y
+=======================================================
+In preparation for projecting...
+
+We're going to use principle components and tsne to create a 2d projection of 36 dimensional data.
+
+```{r}
+X <- Satellite[, -37]
+y <- Satellite$classes
+```
+
+```{r, echo = FALSE}
+X <- X[1:2000, 1:8]
+y <- y[1:2000]
+```
+
+Project Into Lower Dimensions
+=======================================================
+1. project with principle components down to 4 dimensions
+2. project with that to 2 dimensions with tsne
+
+```{r}
+pca <- princomp(X)
+X_t <- predict(pca, X)[,1:2]
+
+data <- data.frame(X_t,
+                   y = as.factor(y))
+data
+```
+
+Plot
+=======================================================
+Plot the components on graph and color by label
+
+```{r}
+qplot(Comp.1, Comp.2, color = y, data = data, size = I(.5))
+```
+
+Deep Learning
+=======================================================
+Demo (nn.R)
+
+Building Great Models
+=======================================================
+* Feature Selection
+* Imputing (deal with missing data)
+* Model Tuning
+* Algorithm Selection
+* Clustering and Other Unsupervised Techniques
+
+Suggested Resources
+=======================================================
+* Coursera Machine Learning Course by Andrew Ng
+* Kaggle.com forums and tutorials
+* My Machine Learning in R Videos on PacktPub.com
+
+========================================================
+![Questions? Feedback?](images/StirTrek2018-SessionSlack.png)
+
+## We are in \#2018--purple

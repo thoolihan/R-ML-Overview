@@ -2,3 +2,5 @@
 notebook_venv/
 .ipynb_checkpoints/
 .Rproj.user
+StirTrek2018.Rpres.bak
+data/
