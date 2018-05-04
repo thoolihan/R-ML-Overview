@@ -587,8 +587,6 @@ qplot(Comp.1, Comp.2, color = y, data = data, size = I(.5))
 Pipes
 =======================================================
 
-
-
 ```{r, eval = FALSE}
 # Normal Syntax
 a <- 1:5
@@ -596,7 +594,7 @@ a <- 1:5
 sample(a, size = 2)
 ```
 
-***
+can be written as...
 
 ```{r, eval=FALSE}
 # Pipe Sytax
@@ -606,6 +604,7 @@ a %>% sample(size = 2)
 
 What's the Benefit?
 =======================================================
+Using dplyr for data manipulation:
 ```{r, eval = FALSE}
 flights %>%
   group_by(year, month, day) %>%
