@@ -2,5 +2,9 @@
 notebook_venv/
 .ipynb_checkpoints/
 .Rproj.user
-StirTrek2018.Rpres.bak
+*.bak
 data/
+StirTrek2018-cache
+StirTrek2018-figure
+StirTrek2018.md
+*.Rproj
