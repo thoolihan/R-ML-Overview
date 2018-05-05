@@ -3097,7 +3097,8 @@ Suggested Resources
 =======================================================
 * Coursera Machine Learning Course by Andrew Ng
 * Kaggle.com forums and tutorials
-* My Machine Learning in R Videos on PacktPub.com
+* Machine Learning in R Videos on PacktPub.com
+  * [packtpub.com/all?search=Hoolihan](https://www.packtpub.com/all?search=Hoolihan)
 
 ========================================================
 ![Questions? Feedback?](images/StirTrek2018-SessionSlack.png)
