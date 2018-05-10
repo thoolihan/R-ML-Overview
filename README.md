@@ -2,7 +2,7 @@
 
 Presented to Stir Trek in 2018
 
-Open StirTrek2018.Rpres in Rstudio, or StirTrek2018.md in a markdown friendly viewer.
+Clone and view StirTrek2018-rpubs.html in a browser
 
 Older parts are an earlier presentation for [Greater Cleveland SciPy Julia R Data Science Group](http://www.meetup.com/Greater-Cleveland-SciPy-Julia-R-Data-Science-Group/events/231475957/)
 
