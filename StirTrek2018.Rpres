@@ -1,10 +1,11 @@
 Machine Learning in R
 ========================================================
 author: Tim Hoolihan (@thoolihan)
-date: 2018.05.04
+date: 2018.07.25
 autosize: true
 ```{r setup, include=FALSE}
 opts_chunk$set(cache=TRUE)
+set.seed(1)
 ```
 
 Tim Hoolihan
@@ -12,13 +13,8 @@ Tim Hoolihan
 - Organizer of the Cleveland R User Group
 - Sr. Director of Data Science at DialogTech
 - Advisory Board Member at DriveIT in Akron
-- Author of a Packt Pub Video Series on Machine Learning in R
+- Creator of a Packt Pub Video Series on Machine Learning in R
 - @thoolihan on github & twitter
-
-========================================================
-![Questions? Feedback?](images/StirTrek2018-SessionSlack.png)
-
-## We are in \#2018--purple
 
 About the Talk
 ========================================================
@@ -637,8 +633,6 @@ Suggested Resources
   * [packtpub.com/all?search=Hoolihan](https://www.packtpub.com/all?search=Hoolihan)
 
 ========================================================
-![Questions? Feedback?](images/StirTrek2018-SessionSlack.png)
-
-## We are in \#2018--purple
+![Questions? Feedback?]
 
 ### Slides are at https://github.com/thoolihan/R-ML-Overview
