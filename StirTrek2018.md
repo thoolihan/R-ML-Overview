@@ -866,7 +866,7 @@ SVM Results
 Confusion Matrix
 
 ```r
-#prefix with library, but ModelMetrics also has a confusion matrix function
+#prefix with library, because ModelMetrics also has a confusion matrix function
 caret::confusionMatrix(model$pred$obs, model$pred$pred)$table
 ```
 
@@ -899,7 +899,7 @@ Sepal.Width    54.6       54.6       0.0
 
 Unsupervised Learning
 =======================================================
-The algorithm looks for patterns without answers. This is useful for exploring your data.
+The algorithm looks for patterns without answers/labels. This is useful for exploring your data.
 
 Clustering with labelled classification data before doing supervised learning, can be a great way to decide if the categories you selected may have overlap, or other issues.
 
@@ -3095,7 +3095,7 @@ Suggested Resources
 * Machine Learning in R Videos on PacktPub.com
   * [packtpub.com/all?search=Hoolihan](https://www.packtpub.com/all?search=Hoolihan)
 
+Questions? Feedback?
 ========================================================
-![Questions? Feedback?]
 
 ### Slides are at https://github.com/thoolihan/R-ML-Overview
