@@ -58,4 +58,4 @@ str(loss_and_metrics)
 
 y_pred <- predict_classes(model, x_test)
 y_test_actual <- as.integer(DNA$Class[-idx]) - 1
-confusionMatrix(y_pred, y_test_actual)
+#confusionMatrix(y_pred, y_test_actual)

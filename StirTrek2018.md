@@ -306,6 +306,11 @@ qplot(x = height, y = armspan, data = people)
 
 in most languages you would need to do something like this:
 
+```r
+qplot(x = people$height, y = people$armspan)
+```
+
+or
 
 ```r
 with(people, 
@@ -315,6 +320,8 @@ with(people,
 
 A lot of functions take a data argument as the environment in which they evaluate the arguments
 
+Called **Non Standard Evaluation**, more info at: [https://adv-r.hadley.nz/meta.html](https://adv-r.hadley.nz/meta.html)
+
 Formula
 =======================================================
 - `armspan ~ height` is a formula, can be read as "armspan by height"
@@ -322,6 +329,14 @@ Formula
 ```r
 reg_form <- lm(armspan ~ height, data = people)
 ```
+
+
+In this model:
+
+- armspan is the response variable, or dependent variable
+- height is the feature, or independent variable 
+
+
 
 Summary of our Regression Line
 =======================================================
@@ -336,19 +351,19 @@ Call:
 lm(formula = armspan ~ height, data = people)
 
 Residuals:
-    Min      1Q  Median      3Q     Max 
--2.9456 -1.4490 -0.1092  1.5515  3.0284 
+   Min     1Q Median     3Q    Max 
+-2.946 -1.449 -0.109  1.552  3.028 
 
 Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  0.25608    1.47483   0.174    0.862    
-height       0.99558    0.02235  44.552   <2e-16 ***
+(Intercept)   0.2561     1.4748    0.17     0.86    
+height        0.9956     0.0223   44.55   <2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 1.738 on 498 degrees of freedom
-Multiple R-squared:  0.7994,	Adjusted R-squared:  0.799 
-F-statistic:  1985 on 1 and 498 DF,  p-value: < 2.2e-16
+Residual standard error: 1.74 on 498 degrees of freedom
+Multiple R-squared:  0.799,	Adjusted R-squared:  0.799 
+F-statistic: 1.98e+03 on 1 and 498 DF,  p-value: <2e-16
 ```
 
 Regression
@@ -361,7 +376,7 @@ reg_form$coefficients
 
 ```
 (Intercept)      height 
-  0.2560814   0.9955773 
+     0.2561      0.9956 
 ```
 - Remember y = mx + b
   - armspan = 0.9956 * height + 0.2561
@@ -375,78 +390,52 @@ people$rline
 ```
 
 ```
-  [1] 64.05230 69.09787 66.97092 71.66855 65.33746 65.30499 70.06401
-  [8] 70.45141 67.94959 67.84936 65.71651 69.88898 69.68600 69.28336
- [15] 64.25076 66.53120 70.21094 66.66326 64.56509 68.21127 72.79629
- [22] 66.66259 65.02790 62.29856 62.71618 70.38388 66.55734 60.06396
- [29] 76.18716 69.95719 69.83665 68.17922 68.97115 68.65423 68.58232
- [36] 67.05481 65.94183 64.38132 66.87702 62.70311 67.88762 62.97101
- [43] 64.38488 64.92899 59.51273 68.97994 67.65486 64.32677 65.36251
- [50] 68.13423 62.90692 56.62849 67.70320 62.44891 66.91407 71.39057
- [57] 71.14057 67.80834 58.86849 63.55430 67.17545 63.20719 68.46226
- [64] 62.73142 68.57753 65.38863 65.08845 64.26499 61.62436 61.54429
- [71] 68.78098 65.06770 69.53840 67.47361 65.48914 69.95151 70.82490
- [78] 60.57260 67.32049 67.89918 69.74204 68.39042 66.00063 67.39535
- [85] 70.08701 65.24610 66.98680 68.44612 62.62570 73.35014 70.33195
- [92] 68.21082 69.06977 65.47586 67.99559 61.72773 63.64290 66.97653
- [99] 58.01097 67.74234 66.75795 65.78670 66.19366 67.90051 69.40442
-[106] 69.95275 61.89387 72.29334 64.34638 64.66301 61.87199 63.08487
-[113] 62.38703 68.85589 70.15128 76.48905 65.53222 66.99839 65.78746
-[120] 70.83553 69.07123 60.91183 64.72400 62.79839 61.78482 63.18884
-[127] 65.09834 66.86162 66.99670 67.33411 65.58236 70.32199 69.97231
-[134] 69.53477 65.34297 64.05764 65.69949 63.34934 63.54456 68.16279
-[141] 62.83088 64.20574 66.45860 68.98745 71.13718 66.74747 58.29688
-[148] 66.09485 70.08559 62.21255 66.04701 65.39971 66.26943 61.94056
-[155] 64.14432 69.79577 69.66490 64.09618 63.80924 66.91319 62.36504
-[162] 70.28396 66.96500 64.10875 62.73160 69.66918 59.72462 68.33852
-[169] 63.46880 62.20371 65.11475 71.53193 73.28845 67.35199 63.92800
-[176] 70.44040 70.62114 71.34715 65.27613 63.73709 69.87279 68.28501
-[183] 65.23543 63.00594 59.24884 68.43097 72.20108 64.72374 62.59467
-[190] 67.12701 68.86059 53.68859 64.76820 66.13804 62.77024 65.00629
-[197] 70.58816 67.16411 66.45579 66.69725 64.11753 64.94593 65.85197
-[204] 72.55934 67.13348 67.14336 65.88483 63.12940 64.52154 67.74013
-[211] 64.77436 55.91140 69.38606 67.83070 62.01107 68.59276 58.64135
-[218] 62.97399 67.93547 61.93788 67.18430 61.70184 65.10286 68.13582
-[225] 66.30375 65.74382 66.42134 65.89349 63.86111 70.17503 63.66048
-[232] 63.98367 65.04818 63.05086 69.91641 65.80551 66.92594 61.25326
-[239] 71.87963 65.26282 73.74422 66.29458 64.50843 69.17932 67.58720
-[246] 64.09263 66.39660 66.15876 63.75165 67.14096 62.25452 62.82181
-[253] 61.35874 66.39588 64.42403 65.30141 67.63084 66.83786 64.22826
-[260] 67.85686 64.04431 70.16306 60.28371 67.85181 69.24245 60.29096
-[267] 66.23451 68.19282 63.17824 61.30603 60.51601 63.78865 64.77102
-[274] 63.88789 63.35759 64.66211 63.78524 68.47886 56.17828 69.18308
-[281] 65.73457 58.66548 66.54382 66.45785 64.74452 68.20470 57.51716
-[288] 63.76719 68.59263 62.41890 66.61094 68.37001 71.04253 63.89864
-[295] 70.79316 65.79737 67.66629 74.05499 63.67011 70.42063 65.77895
-[302] 72.03677 65.89606 71.45563 67.60830 61.77606 63.61974 67.62278
-[309] 66.54905 64.75780 63.53090 68.69317 65.25055 61.48129 58.51337
-[316] 62.28298 75.01090 61.21701 66.47091 64.91582 65.37844 62.51455
-[323] 65.70700 70.00282 71.03246 63.61777 63.64404 61.45504 68.15420
-[330] 63.55316 61.57308 64.86624 66.24378 64.61537 62.58569 64.66175
-[337] 60.49924 63.46306 64.23553 64.83941 60.08819 64.43694 64.48322
-[344] 64.78121 65.41928 66.03063 68.71728 68.72387 66.72474 65.82299
-[351] 67.85782 64.51609 60.30467 64.14339 67.65353 61.61754 55.38904
-[358] 68.77798 67.36450 67.90994 64.91077 61.79122 65.76113 66.63534
-[365] 69.84895 67.17219 65.99185 62.19520 63.88578 60.94948 59.90064
-[372] 63.69765 66.04347 71.17246 70.30248 61.30409 71.42237 62.60654
-[379] 67.54007 59.50702 64.94189 62.27612 61.84318 65.39404 64.86788
-[386] 71.64213 63.83626 69.61541 65.51188 63.81344 62.03356 70.78815
-[393] 65.42261 67.71486 65.86537 68.63933 66.53608 64.21637 60.88647
-[400] 67.40256 64.77111 66.30091 70.04122 66.47960 69.55492 66.29773
-[407] 60.18363 63.15317 62.91152 63.34770 66.49494 62.75958 64.16742
-[414] 66.55885 66.22350 63.28426 66.61501 69.47396 61.50749 66.64800
-[421] 72.00210 61.80476 65.21348 72.30028 64.84988 71.15575 68.35933
-[428] 67.23389 65.91483 66.13367 67.42534 61.36048 68.11016 62.32527
-[435] 66.71087 65.18021 64.36441 72.77847 69.19163 71.49472 66.58523
-[442] 58.28831 59.09267 62.64013 66.98701 66.24160 62.04945 71.32212
-[449] 65.81244 59.07317 64.28446 69.41885 61.77665 68.40104 69.58514
-[456] 63.85548 67.70134 66.12744 60.15162 67.24356 67.43381 68.32297
-[463] 67.53939 65.91269 67.36113 60.70454 66.07520 62.16021 69.85857
-[470] 66.41293 70.41751 59.23528 69.72325 68.41077 68.35047 68.84901
-[477] 65.92762 63.13534 66.99302 62.67082 64.68432 64.45194 59.22017
-[484] 64.15990 67.91037 65.66163 66.85736 61.95595 57.91410 66.97062
-[491] 66.10734 63.73896 67.92569 71.38431 68.97505 65.10064 72.66341
-[498] 61.60500 71.95739 61.55899
+  [1] 64.05 69.10 66.97 71.67 65.34 65.30 70.06 70.45 67.95 67.85 65.72
+ [12] 69.89 69.69 69.28 64.25 66.53 70.21 66.66 64.57 68.21 72.80 66.66
+ [23] 65.03 62.30 62.72 70.38 66.56 60.06 76.19 69.96 69.84 68.18 68.97
+ [34] 68.65 68.58 67.05 65.94 64.38 66.88 62.70 67.89 62.97 64.38 64.93
+ [45] 59.51 68.98 67.65 64.33 65.36 68.13 62.91 56.63 67.70 62.45 66.91
+ [56] 71.39 71.14 67.81 58.87 63.55 67.18 63.21 68.46 62.73 68.58 65.39
+ [67] 65.09 64.26 61.62 61.54 68.78 65.07 69.54 67.47 65.49 69.95 70.82
+ [78] 60.57 67.32 67.90 69.74 68.39 66.00 67.40 70.09 65.25 66.99 68.45
+ [89] 62.63 73.35 70.33 68.21 69.07 65.48 68.00 61.73 63.64 66.98 58.01
+[100] 67.74 66.76 65.79 66.19 67.90 69.40 69.95 61.89 72.29 64.35 64.66
+[111] 61.87 63.08 62.39 68.86 70.15 76.49 65.53 67.00 65.79 70.84 69.07
+[122] 60.91 64.72 62.80 61.78 63.19 65.10 66.86 67.00 67.33 65.58 70.32
+[133] 69.97 69.53 65.34 64.06 65.70 63.35 63.54 68.16 62.83 64.21 66.46
+[144] 68.99 71.14 66.75 58.30 66.09 70.09 62.21 66.05 65.40 66.27 61.94
+[155] 64.14 69.80 69.66 64.10 63.81 66.91 62.37 70.28 66.96 64.11 62.73
+[166] 69.67 59.72 68.34 63.47 62.20 65.11 71.53 73.29 67.35 63.93 70.44
+[177] 70.62 71.35 65.28 63.74 69.87 68.29 65.24 63.01 59.25 68.43 72.20
+[188] 64.72 62.59 67.13 68.86 53.69 64.77 66.14 62.77 65.01 70.59 67.16
+[199] 66.46 66.70 64.12 64.95 65.85 72.56 67.13 67.14 65.88 63.13 64.52
+[210] 67.74 64.77 55.91 69.39 67.83 62.01 68.59 58.64 62.97 67.94 61.94
+[221] 67.18 61.70 65.10 68.14 66.30 65.74 66.42 65.89 63.86 70.18 63.66
+[232] 63.98 65.05 63.05 69.92 65.81 66.93 61.25 71.88 65.26 73.74 66.29
+[243] 64.51 69.18 67.59 64.09 66.40 66.16 63.75 67.14 62.25 62.82 61.36
+[254] 66.40 64.42 65.30 67.63 66.84 64.23 67.86 64.04 70.16 60.28 67.85
+[265] 69.24 60.29 66.23 68.19 63.18 61.31 60.52 63.79 64.77 63.89 63.36
+[276] 64.66 63.79 68.48 56.18 69.18 65.73 58.67 66.54 66.46 64.74 68.20
+[287] 57.52 63.77 68.59 62.42 66.61 68.37 71.04 63.90 70.79 65.80 67.67
+[298] 74.05 63.67 70.42 65.78 72.04 65.90 71.46 67.61 61.78 63.62 67.62
+[309] 66.55 64.76 63.53 68.69 65.25 61.48 58.51 62.28 75.01 61.22 66.47
+[320] 64.92 65.38 62.51 65.71 70.00 71.03 63.62 63.64 61.46 68.15 63.55
+[331] 61.57 64.87 66.24 64.62 62.59 64.66 60.50 63.46 64.24 64.84 60.09
+[342] 64.44 64.48 64.78 65.42 66.03 68.72 68.72 66.72 65.82 67.86 64.52
+[353] 60.30 64.14 67.65 61.62 55.39 68.78 67.36 67.91 64.91 61.79 65.76
+[364] 66.64 69.85 67.17 65.99 62.20 63.89 60.95 59.90 63.70 66.04 71.17
+[375] 70.30 61.30 71.42 62.61 67.54 59.51 64.94 62.28 61.84 65.39 64.87
+[386] 71.64 63.84 69.62 65.51 63.81 62.03 70.79 65.42 67.71 65.87 68.64
+[397] 66.54 64.22 60.89 67.40 64.77 66.30 70.04 66.48 69.55 66.30 60.18
+[408] 63.15 62.91 63.35 66.49 62.76 64.17 66.56 66.22 63.28 66.62 69.47
+[419] 61.51 66.65 72.00 61.80 65.21 72.30 64.85 71.16 68.36 67.23 65.91
+[430] 66.13 67.43 61.36 68.11 62.33 66.71 65.18 64.36 72.78 69.19 71.49
+[441] 66.59 58.29 59.09 62.64 66.99 66.24 62.05 71.32 65.81 59.07 64.28
+[452] 69.42 61.78 68.40 69.59 63.86 67.70 66.13 60.15 67.24 67.43 68.32
+[463] 67.54 65.91 67.36 60.70 66.08 62.16 69.86 66.41 70.42 59.24 69.72
+[474] 68.41 68.35 68.85 65.93 63.14 66.99 62.67 64.68 64.45 59.22 64.16
+[485] 67.91 65.66 66.86 61.96 57.91 66.97 66.11 63.74 67.93 71.38 68.98
+[496] 65.10 72.66 61.61 71.96 61.56
 ```
 
 Plot Regression
@@ -458,12 +447,12 @@ ggplot(data = people, aes(x = height)) +
   geom_line(aes(y = rline, color = 'regression line'))
 ```
 
-![plot of chunk unnamed-chunk-21](StirTrek2018-figure/unnamed-chunk-21-1.png)
+![plot of chunk unnamed-chunk-22](StirTrek2018-figure/unnamed-chunk-22-1.png)
 
 
 What is Our Regression Formula/Line?
 =======================================================
-It describes the relationship between the response variable (armspan) and the dependent variable (height). In other words, it describes how armspan is expected to change when height changes.
+It describes the relationship between the response variable (armspan) and the independent variable (height). In other words, it describes how armspan is expected to change when height changes.
 
 How It Was Created
 =======================================================
@@ -471,7 +460,7 @@ We did not explicitly program the relationship with rules, we used an alogorithm
 
 Does The Relationship Hold?
 =======================================================
-Let's assume that was real data from American adults (18-50) measured in the last 10 years...
+Let's pretend that was real data from American adults (18-50) measured in the last 10 years...
 - Is the relationship valid for adults (18-50) in France?
 - Is the relationship valid for children?
 - Is the relationship valid for senior citizens?
@@ -485,6 +474,8 @@ The model to describe the relationship can be used to to predict the response va
 
 As an example, our model for American adults should not be applied to children, as they were not represented in the set and have meaningful physiological differences.
 
+> "Essentially, all models are wrong, but some are useful" -George Box
+
 
 So Let's Make a Prediction
 =======================================================
@@ -496,8 +487,8 @@ predict(reg_form, newdata = new_person)
 ```
 
 ```
-       1 
-69.94649 
+    1 
+69.95 
 ```
 
 A Word on Data Sets
@@ -515,6 +506,7 @@ Data used with final model to estimate model fit
 Caret Package
 =======================================================
 * Name is short for **C**lassification **A**nd **RE**gression **T**raining
+* Analogous to Python's scikit-learn package
 
 Contains tools for:
 
@@ -523,6 +515,7 @@ Contains tools for:
 * feature selection
 * model tuning using resampling
 * variable importance estimation
+* consistent interface for many different models
 
 Regression: Predicting HP
 =======================================================
@@ -566,7 +559,7 @@ Let's Look At Correlation
 pairs(x)
 ```
 
-![plot of chunk unnamed-chunk-25](StirTrek2018-figure/unnamed-chunk-25-1.png)
+![plot of chunk unnamed-chunk-26](StirTrek2018-figure/unnamed-chunk-26-1.png)
 
 Split Our Data
 =======================================================
@@ -576,7 +569,7 @@ library(caret)
 
 training_index <- createDataPartition(x$hp, p = 0.7, list = FALSE)
 train_data <- x[training_index, ]
-test_data <- x[-training_index, ]  # note the '-' in front of the index
+val_data <- x[-training_index, ]  # note the '-' in front of the index
 
 dim(train_data)
 ```
@@ -584,6 +577,8 @@ dim(train_data)
 ```
 [1] 24  5
 ```
+
+Note that we're only passing in x$hp into the splitting function
 
 Create Our Model
 =======================================================
@@ -602,45 +597,45 @@ Call:
 lm(formula = .outcome ~ ., data = dat)
 
 Residuals:
-    Min      1Q  Median      3Q     Max 
--38.598 -11.736   4.284  14.964  28.329 
+   Min     1Q Median     3Q    Max 
+-38.60 -11.74   4.28  14.96  28.33 
 
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
-(Intercept) 461.4093    74.3355   6.207  5.8e-06 ***
-mpg          -2.1942     1.7781  -1.234 0.232259    
-disp          0.1645     0.1054   1.561 0.135012    
-wt           10.8343    14.0831   0.769 0.451169    
-qsec        -19.5289     4.0367  -4.838 0.000114 ***
+            Estimate Std. Error t value  Pr(>|t|)    
+(Intercept)  461.409     74.335    6.21 0.0000058 ***
+mpg           -2.194      1.778   -1.23   0.23226    
+disp           0.165      0.105    1.56   0.13501    
+wt            10.834     14.083    0.77   0.45117    
+qsec         -19.529      4.037   -4.84   0.00011 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 21.73 on 19 degrees of freedom
-Multiple R-squared:  0.9023,	Adjusted R-squared:  0.8817 
-F-statistic: 43.85 on 4 and 19 DF,  p-value: 2.436e-09
+Residual standard error: 21.7 on 19 degrees of freedom
+Multiple R-squared:  0.902,	Adjusted R-squared:  0.882 
+F-statistic: 43.8 on 4 and 19 DF,  p-value: 0.00000000244
 ```
 
 Predict On Test Data
 =======================================================
 
 ```r
-test_data$predicted <- predict(model, test_data)
+val_data$predicted <- predict(model, val_data)
 
-test_data$miss <- test_data$predicted - test_data$hp
+val_data$miss <- abs(val_data$predicted - val_data$hp)
 
-test_data[, c('hp', 'predicted', 'miss')]
+val_data[, c('hp', 'predicted', 'miss')]
 ```
 
 ```
-                     hp predicted        miss
-Mazda RX4 Wag       110 140.42452   30.424517
-Merc 230             95  21.46512  -73.534879
-Merc 280            123 126.74885    3.748854
-Merc 450SL          180 165.53337  -14.466634
-Lincoln Continental 215 225.03855   10.038551
-Toyota Corolla       65  29.98108  -35.018923
-Pontiac Firebird    175 193.78738   18.787382
-Maserati Bora       335 231.57971 -103.420289
+                     hp predicted    miss
+Mazda RX4 Wag       110    140.42  30.425
+Merc 230             95     21.47  73.535
+Merc 280            123    126.75   3.749
+Merc 450SL          180    165.53  14.467
+Lincoln Continental 215    225.04  10.039
+Toyota Corolla       65     29.98  35.019
+Pontiac Firebird    175    193.79  18.787
+Maserati Bora       335    231.58 103.420
 ```
 
 Measuring Error
@@ -648,16 +643,16 @@ Measuring Error
 
 ```r
 library(ModelMetrics)
-mse(test_data$hp, test_data$predicted)
+mse(val_data$hp, val_data$predicted)
 ```
 
 ```
-[1] 2366.523
+[1] 2367
 ```
 
 
 ```r
-mae(test_data$hp, test_data$predicted)
+mae(val_data$hp, val_data$predicted)
 ```
 
 ```
@@ -867,15 +862,39 @@ Confusion Matrix
 
 ```r
 #prefix with library, because ModelMetrics also has a confusion matrix function
-caret::confusionMatrix(model$pred$obs, model$pred$pred)$table
+caret::confusionMatrix(model$pred$obs, model$pred$pred)
 ```
 
 ```
+Confusion Matrix and Statistics
+
             Reference
 Prediction   setosa versicolor virginica
   setosa        147          3         0
   versicolor      0        140        10
   virginica       0          9       141
+
+Overall Statistics
+                                        
+               Accuracy : 0.951         
+                 95% CI : (0.927, 0.969)
+    No Information Rate : 0.338         
+    P-Value [Acc > NIR] : <2e-16        
+                                        
+                  Kappa : 0.927         
+ Mcnemar's Test P-Value : NA            
+
+Statistics by Class:
+
+                     Class: setosa Class: versicolor Class: virginica
+Sensitivity                  1.000             0.921            0.934
+Specificity                  0.990             0.966            0.970
+Pos Pred Value               0.980             0.933            0.940
+Neg Pred Value               1.000             0.960            0.967
+Prevalence                   0.327             0.338            0.336
+Detection Rate               0.327             0.311            0.313
+Detection Prevalence         0.333             0.333            0.333
+Balanced Accuracy            0.995             0.944            0.952
 ```
 
 What Feature mattered?
@@ -906,11 +925,11 @@ Clustering with labelled classification data before doing supervised learning, c
 Projection
 =======================================================
 
-![plot of chunk unnamed-chunk-47](StirTrek2018-figure/unnamed-chunk-47-1.png)
+![plot of chunk unnamed-chunk-48](StirTrek2018-figure/unnamed-chunk-48-1.png)
 
 ***
 
-![plot of chunk unnamed-chunk-48](StirTrek2018-figure/unnamed-chunk-48-1.png)
+![plot of chunk unnamed-chunk-49](StirTrek2018-figure/unnamed-chunk-49-1.png)
 
 Unsupervised Learning
 =======================================================
@@ -3039,7 +3058,7 @@ Plot the components on graph and color by label
 qplot(Comp.1, Comp.2, color = y, data = data, size = I(.5))
 ```
 
-![plot of chunk unnamed-chunk-58](StirTrek2018-figure/unnamed-chunk-58-1.png)
+![plot of chunk unnamed-chunk-59](StirTrek2018-figure/unnamed-chunk-59-1.png)
 
 Pipes
 =======================================================
