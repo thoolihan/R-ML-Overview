@@ -1,7 +1,7 @@
 Machine Learning in R
 ========================================================
 author: Tim Hoolihan (@thoolihan)
-date: 2018.07.25
+date: 2018.09.05
 autosize: true
 ```{r setup, include=FALSE}
 opts_chunk$set(cache=TRUE)
@@ -639,11 +639,16 @@ Demo (nn.R)
 
 Building Great Models
 =======================================================
+* Exploratory Data Analysis
 * Feature Selection
 * Imputing (deal with missing data)
 * Model Tuning
 * Algorithm Selection
 * Statistical Learning
+
+Jupyter Notebooks & Lab
+=======================================================
+I sometimes use both R and Python on projects. R for EDA in a notebook, with deep learning in Python. Jupyter Lab makes this mixing pretty straight forward.
 
 Suggested Resources
 =======================================================
